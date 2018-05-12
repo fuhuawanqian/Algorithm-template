@@ -1,0 +1,41 @@
+bellman_ford的queue优化,即spfa，虽然不被国际上承认，不太稳定，但是还是很好用的，大多数情况下还是很快的；
+bellman_ford能够解决负权最短路问题，并且能够判断负权回路.
+
+int head[maxn],dis[maxn],cnt[maxn],p[maxn],tot,n;
+bool inq[maxn];
+struct Edge{
+    int to,val,next;
+}edge[maxn];
+
+void addEdge(int u,int v,int w){
+    edge[tot].to=v;
+    edge[tot].val=w;
+    edge[tot].next=head[u];
+    head[u]=tot++;
+}
+
+bool spfa(int s){
+    memset(dis,inf,sizeof(dis));
+    memset(inq,0,sizeof(inq));
+    memset(cnt,0,sizeof(cnt));
+    memset(p,-1,sizeof(p));
+    queue<int>q;
+    q.push(s);dis[s]=0;inq[s]=true;
+    while(!q.empty()){
+        int u=q.front();q.pop();inq[u]=false;
+        for(int i=head[u];i!=-1;i=edge[i].next){
+            int v=edge[i].to;
+            int w=edge[i].val;
+            if(dis[v]>dis[u]+w){
+                dis[v]=dis[u]+w;
+                p[v]=u;
+                if(!inq[v]){
+                    q.push(v);
+                    cnt[v]++;
+                    if(cnt[v]>n) return false;
+                }
+            }
+        }
+    }
+    return true;
+}
