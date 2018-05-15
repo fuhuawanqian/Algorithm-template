@@ -1,0 +1,29 @@
+dijkstra+堆优化:目前最快的最短路算法，唯一的缺点就是不适合负权路,更别提负权回路了.
+
+const int inf = 0x3f3f3f3f;
+const int maxn = 100000+10;
+
+#define pii pair<int,int>
+#define mk make_pair
+struct Edge{
+    int to,cost;
+};
+vector<Edge>gra[maxn];
+int dis[maxn];
+void dijkstra(int s){
+    memset(dis,inf,sizeof(dis));dis[s]=0;
+    priority_queue<pii,vector<pii>,greater<pii> >pq;pq.push(mk(0,s));
+    while(!pq.empty()){
+        pii e=pq.top();
+        int u=e.second,w=e.first;
+        if(dis[u]<w) continue;
+        for(int i=0;i<gra[u].size();i++){
+            int v=gra[u][i].to;
+            int cost=gra[u][i].cost;
+            if(dis[v]>dis[u]+cost){
+                dis[v]=dis[u]+cost;
+                pq.push(mk(dis[v],v));
+            }
+        }
+    }
+}
