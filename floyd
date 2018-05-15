@@ -1,0 +1,14 @@
+floyd算法:完美,优雅而功能强大，能解决负权路,基于动态规划，多源.
+
+void floyd(){
+    for(int k=0;k<n;k++){
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                if(gra[i][j]>gra[i][k]+gra[k][j]){
+                    gra[i][j]=gra[i][k]+gra[k][j];
+                    path[i][j]=k;
+                }
+            }
+        }
+    }
+}
