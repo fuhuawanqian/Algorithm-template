@@ -1,0 +1,26 @@
+kruskal:
+struct Edge{
+    int u,v,w;
+    bool operator<(const Edge& a){
+        return w<a.w;
+    }
+}edge[maxn];
+int f[maxn];
+int dsu(int x){
+    return x==f[x]?x:(f[x]=dsu(f[x]));
+}
+
+int kruskal(){
+    sort(edge,edge+m);
+    for(int i=0;i<=n;i++) f[i]=i;
+    int cnt=0,sum=0;
+    for(int i=0;i<m;i++){
+        if(cnt>=n-1) break;
+        int u=edge[i].u,v=edge[i].v,w=edge[i].w;
+        int fu=dsu(u),fv=dsu(v);
+        if(fu==fv) continue;
+        f[fu]=fv;cnt++;sum+=w;
+    }
+    if(cnt>=n-1) return sum;
+    else return -1;
+}
