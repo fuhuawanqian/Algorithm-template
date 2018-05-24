@@ -1,0 +1,53 @@
+S和T的index从0开始,next数组从1开始
+
+int S[maxn],T[maxn];
+int slen,tlen;
+void getNext(){
+    int j=0,k=-1;
+    next[0]=-1;
+    while(j<tlen){
+        if(k==-1||T[j]==T[k]){
+            next[++j]=++k;
+        }else{
+            k=next[k];
+        }
+    }
+}
+void kmp_index(){
+    int i=0,j=0;
+    getNext();
+    while(i<slen&&j<tlen){
+        if(j==-1||S[i]==T[j]){
+            ++i;++j;
+        }else{
+            j=next[j];
+        }
+    }
+    if(j==tlen){
+        return i-tlen;
+    }else{
+        return -1;
+    }
+}
+void kmp_count(){
+    int ans=0;
+    int i=0,j=0;
+    if(slen==1&&tlen==1){
+        if(S[i]==T[j]) return 1;
+        else return 0;
+    }
+    getNext();
+    for(int i=0;i<slen;i++){
+        while(j>0&&S[i]!=T[j]){
+            j=next[j];
+        }
+        if(S[i]==T[j]){
+            ++j;
+        }
+        if(j==tlen){
+            ans++;
+            j=next[j];
+        }
+    }
+    return ans;
+}
